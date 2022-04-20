@@ -1,5 +1,6 @@
 <?php
 $searchInput = $_GET['searchInput'];
+
 ?>
 
 <!doctype html>
@@ -17,13 +18,13 @@ $searchInput = $_GET['searchInput'];
   <?php require_once('../../navbar.php'); ?>
 
   <div class="m-5 text-center">
-    <h3>Framework - Available Stock</h1>
+  <h3>Supreme - 料號進出貨記錄查詢</h3>
   </div>
 
   <form class="my-5" method="get" name="form" action="getStatus.php">
     <div class="row g-3 justify-content-center align-items-center m-3">
       <div class="col-auto">
-        <label for="searchInput" class="col-form-label fw-bold">Item Code:</label>
+        <label for="searchInput" class="col-form-label fw-bold">ItemCode:</label>
       </div>
       <div class="col-auto">
         <input type="text" id="searchInput" class="form-control" name="searchInput" value="<?php echo $searchInput ?>" aria-describedby="passwordHelpInline">
@@ -38,25 +39,35 @@ $searchInput = $_GET['searchInput'];
 
 
   <!--Table-->
+
+  <h5 class="text-center mb-5">(僅顯示最近 100 筆資料)</h5>
   <table class="table table-hover table-bordered table-striped">
     <thead>
       <tr>
+        <th scope="col">GR / GI</th>
+        <th scope="col">TransNo</th>
         <th scope="col">Item Code</th>
-        <th scope="col">Location</th>
-        <th scope="col">Total Qty</th>
+        <th scope="col">Quantity</th>
         <th scope="col">Date</th>
       </tr>
     </thead>
     <tbody>
 
       <?php
-      require_once("../../database.php");
+      require_once("database.php");
 
-      $query = "SELECT TOP 100000 CartonID AS [Item Code], LocationCode AS [Location], SUM(AvailableQTY) AS [Total Qty], CONVERT(varchar,CreatedDT,23) AS [Date] FROM WMTransWH
-      LEFT JOIN WMLocation ON WMLocation.ID = WMTransWH.LocationID
-      WHERE ProjectID = 100 AND WMTransWH.AvailableQTY > 0 AND CartonID = '$searchInput'
-      GROUP BY CartonID, LocationCode, LocationID, CONVERT(varchar,CreatedDT,23)
-      ORDER BY CONVERT(varchar,CreatedDT,23)";
+      $seq = "0";
+      $totalQty = "0";
+      $totalGW = "0";
+      $totalPrice = "0";
+      $cartonNoArr = array();
+
+      $query = "SELECT TOP 100 MoveType, TransNo, ItemCode, SUM(OrderQTY) AS [Qty], CONVERT(varchar,WMTransDT.CreatedDT,111) as [Date]  FROM WMTransDT
+      LEFT JOIN WMTransHD ON WMTransHD.ID = WMTransDT.TransHDID
+      WHERE WMTransDT.ProjectID = 51 AND ItemCode = '$searchInput'
+      GROUP BY MoveType, TransNo, ItemCode, CONVERT(varchar,WMTransDT.CreatedDT,111)
+      ORDER BY CONVERT(varchar,WMTransDT.CreatedDT,111) DESC";
+
       $options = array('ReturnDatesAsStrings' => true);
       $query_run = sqlsrv_query($conn, $query, null, $options);
       if ($query_run === false) {
@@ -67,10 +78,12 @@ $searchInput = $_GET['searchInput'];
 
       ?>
         <tr>
-          <th scope="row"> <?php echo $row['Item Code'] ?></td>
-          <td> <?php echo $row['Location'] ?></td>
-          <td> <?php echo $row['Total Qty'] ?></td>
+          <th scope="row"> <?php echo $row['MoveType'] ?></td>
+          <td> <?php echo $row['TransNo'] ?></td>
+          <td> <?php echo $row['ItemCode'] ?></td>
+          <td> <?php echo $row['Qty'] ?></td>
           <td> <?php echo $row['Date'] ?></td>
+
 
         </tr>
 
@@ -81,6 +94,9 @@ $searchInput = $_GET['searchInput'];
     </tbody>
 
   </table>
+
+
+  
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

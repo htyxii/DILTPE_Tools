@@ -54,13 +54,7 @@ $scanCodeInput = $_GET['scanCodeInput'];
     <tbody>
 
       <?php
-      require_once("database.php");
-
-      $seq = "0";
-      $totalQty = "0";
-      $totalGW = "0";
-      $totalPrice = "0";
-      $cartonNoArr = array();
+      require_once("../../database.php");
 
       $query = "SELECT TOP 10 WMTransWH.Extra3 AS [ScanCode], WMTransWH.Extra1 AS [DN], * FROM WMTransWH
                 LEFT JOIN WMPackList ON WMPackList.TargetWHID = WMTransWH.ID
@@ -95,11 +89,6 @@ $scanCodeInput = $_GET['scanCodeInput'];
 
       <?php
       }
-      ?>
-
-      <?php
-      $totalCarton = array_unique($cartonNoArr);
-      //var_dump($totalCarton);
       ?>
 
     </tbody>

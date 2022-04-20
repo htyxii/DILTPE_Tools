@@ -12,12 +12,11 @@
   <!-- As a heading -->
   <?php require_once('../../navbar.php'); ?>
 
-
   <form class="my-5" method="get" name="form" action="getStatus.php">
     <div class="row g-3 justify-content-center align-items-center m-3">
       <h2 class="col-auto">
         Skyworks 紙箱庫存
-</h2>
+      </h2>
       <div class="col-auto">
         <input type="submit" value="查詢" id="generateBtn" class="btn btn-lg btn-primary">
         <!-- <button type="button" name="save" class="btn btn-success ml-2  disabled" id="download"><i class="bi bi-file-pdf-fill"></i>Fix It!</button> -->
@@ -38,13 +37,7 @@
     <tbody>
 
       <?php
-      require_once("database.php");
-
-      $seq = "0";
-      $totalQty = "0";
-      $totalGW = "0";
-      $totalPrice = "0";
-      $cartonNoArr = array();
+      require_once('../../database.php');
 
       $query = "SELECT WMTransDT.ItemCode, SUM(WMTransWH.AvailableQTY) AS Stock, 
       CASE 
@@ -77,11 +70,11 @@
         <tr class="fs-5">
           <th scope="row"> <?php echo $row['ItemCode'] ?></td>
 
-          <?php if ($row['Stock'] < $row['Safety Stock']) {
-            echo '<td class="fw-bold text-danger">不足</td>';
-          } else if ($row['Stock'] > $row['Safety Stock']) {
-            echo '<td class="fw-bold text-success">足夠</td>';
-          }
+            <?php if ($row['Stock'] < $row['Safety Stock']) {
+              echo '<td class="fw-bold text-danger">不足</td>';
+            } else if ($row['Stock'] > $row['Safety Stock']) {
+              echo '<td class="fw-bold text-success">足夠</td>';
+            }
             ?>
 
           <td> <?php echo $row['Stock'] ?></td>
@@ -90,11 +83,6 @@
 
       <?php
       }
-      ?>
-
-      <?php
-      $totalCarton = array_unique($cartonNoArr);
-      //var_dump($totalCarton);
       ?>
 
     </tbody>

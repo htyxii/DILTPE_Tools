@@ -14,39 +14,11 @@ $toInput = $_GET['toInput'];
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
 
-  <style> 
-			@media print { 
-			.noprint { 
-        display: none; 
-			} 
-			} 
-		</style> 
-
 </head>
 
 <body>
 
-<form class="my-5 noprint" method="get" name="form" action="getAddressLabel.php" target="_blank">
-    <div class="row g-3 justify-content-center align-items-center m-3">
-      <div class="col-auto">
-        <label for="fromInput" class="col-form-label fw-bold d-none">Trans.From:</label>
-      </div>
-      <div class="col-auto">
-        <input type="text" id="inputInvoice" class="form-control d-none" name="fromInput" value="<?php echo $fromInput ?>" aria-describedby="passwordHelpInline">
-      </div>
-      <div class="col-auto">
-        <label for="toInput" class="col-form-label fw-bold d-none">Trans.To:</label>
-      </div>
-      <h3 class="col-auto noprint"><?php echo $fromInput ?> - <?php echo $toInput ?></h3>
-      <div class="col-auto">
-        <input type="text" id="inputInvoice" class="form-control d-none" name="toInput" value="<?php echo $toInput ?>" aria-describedby="passwordHelpInline">
-      </div>
-      <div class="col-auto">
-        <input type="submit" value="地址條" id="generateBtn" class="btn btn-primary">
-        <!-- <button type="button" name="save" class="btn btn-success ml-2" id="download"><i class="bi bi-file-pdf-fill"></i>Download as PDF</button> -->
-      </div>
-    </div>
-  </form>
+
 
   <!-- <div class="m-5 text-center">
     <h3>Framework - Picking List</h1>
@@ -169,11 +141,11 @@ $toInput = $_GET['toInput'];
         <thead>
           <tr>
             <th scope="col">Item Code</th>
-            <th scope="col">Quantity</th>
             <th scope="col">Location</th>
             <th scope="col">Location-2</th>
             <th scope="col">Location-3</th>
             <th scope="col">Description</th>
+            <th scope="col">Quantity</th>
           </tr>
         </thead>
         <tbody id="<?php echo $row['DN'] ?>">
@@ -244,12 +216,11 @@ $toInput = $_GET['toInput'];
 
     $rowDN = $row['DN'];
     $rowItemCode = $row['ItemCode'];
-    $rowQty = $row['Qty'];
     $rowLocation = $row['Location'];
     $rowLocation2 = $row['Location2'];
     $rowLocation3 = $row['Location3'];
     $rowItemDesc = $row['ItemDesc'];
-    
+    $rowQty = $row['Qty'];
 
     echo '<script type="text/JavaScript">
     
@@ -264,9 +235,6 @@ $toInput = $_GET['toInput'];
     echo $rowItemCode;
     echo '*</span></th>
     <td>';
-    echo $rowQty;
-    echo '</td>
-    <td>';
     echo $rowLocation;
     echo '</td>
     <td>';
@@ -278,7 +246,9 @@ $toInput = $_GET['toInput'];
     <td>';
     echo $rowItemDesc;
     echo '</td>
-    `
+    <td>';
+    echo $rowQty;
+    echo '</td>`
 
      itemList = document.querySelector("#';
     echo $rowDN;

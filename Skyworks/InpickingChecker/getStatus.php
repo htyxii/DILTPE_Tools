@@ -62,13 +62,7 @@ $scanCodeInput = $_GET['scanCodeInput'];
     <tbody>
 
       <?php
-      require_once("database.php");
-
-      $seq = "0";
-      $totalQty = "0";
-      $totalGW = "0";
-      $totalPrice = "0";
-      $cartonNoArr = array();
+      require_once("../../database.php");
 
       $query = "SELECT WMTransHD.TransStatus, WMTransHD.MoveType, WMTransHD.TransNo, CONVERT(varchar,WMTransHD.CreatedDT,111) AS [TransDate], WMTransWH.Extra1 AS [PackingList], GRHD.ArrivedDockDate, WMTransHD.Extra1, SUM(WMPackList.ScanedQTY) AS [Qty], WMTransHD.DocNo AS [DeliveryParty], WMTransDT.ItemCode, WMTransDT.ScanCode FROM WMTransDT
       LEFT JOIN WMTransHD ON WMTransHD.ID = WMTransDT.TransHDID
@@ -110,11 +104,6 @@ $scanCodeInput = $_GET['scanCodeInput'];
 
       <?php
       }
-      ?>
-
-      <?php
-      $totalCarton = array_unique($cartonNoArr);
-      //var_dump($totalCarton);
       ?>
 
     </tbody>
